@@ -117,10 +117,6 @@ function evaluateEquation(equation, parameterValueMap) {
       }
     }
   
-    if (stack.length !== 1 || isNaN(stack[0])) {
-      throw new Error('Invalid equation');
-    }
-  
     return stack[0];
   }
   

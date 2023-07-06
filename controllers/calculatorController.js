@@ -52,14 +52,15 @@ function calculatorController(equationService) {
         }
       });
     } catch (error) {
-      console.error('Could not evaluate the equation');
+      console.error('Could not evaluate the equation', error.message);
+      const errorMessage = `Could not evaluate the equation: ${error.message}`;
       
     // Get all the equations 
     equationService.getAllEquations((err, equations) => {
       if (err) {
       } else {
         // Handle error when equation cannot be evaluated
-        res.render('calculator', { error: 'Please enter a valid equation', equations });
+        res.render('calculator', { error: errorMessage, equations });
       }
     });
     }
