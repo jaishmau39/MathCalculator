@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style>
+    /* CSS Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+    
+    .title {
+      text-align: center;
+      font-size: 28px;
+      margin-top: 0;
+    }
+    
+    .calculator-form {
+      margin-bottom: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 10px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+    
+    .calculate-button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    .calculate-button:hover {
+      background-color: #45a049;
+    }
+    
+    .results-title {
+      margin-top: 0;
+    }
+    
+    .results-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .result-equation {
+      font-weight: bold;
+    }
+    
+    .result-value {
+      font-size: 20px;
+    }
+    
+    .remove-button {
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    .remove-button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Calculator</h1>
+
+
+   
+    <form class="calculator-form" method="POST" action="/">
+      <div class="form-group">
+        <label for="equation">Equation:</label>
+        <input type="text" id="equation" name="equation" required>
+      </div>
+     
+      <div class="form-group">
+        <label for="parameters">Parameters (comma-separated):</label>
+        <input type="text" id="parameters" name="parameters" oninput="generateParameterFields()" required>
+      </div>
+    
+      <!-- Display Parameter fields -->
+      <div id="parameterFields" class="form-group">
+      </div>
+
+      
+    
+      <button type="submit" class="calculate-button">Calculate</button>
+    </form>
+
+    <!-- error handling while re rendering -->
+    <!-- Display the error message if it exists -->
+    <% if (typeof error !== 'undefined') { %>
+      <div class="error-message"><%= error %></div>
+    <% } %>
+
+
+  
+    <h2 class="results-title">Results</h2>
+    <ul class="results-list">
+      <% equations.forEach((equation) => { %>
+        <li class="result-item">
+          <div class="result-equation"><%= equation.equation %></div>
+          <div class="result-value"><%= equation.result %></div>
+          <form class="remove-form" method="POST" action="/remove">
+            <input type="hidden" name="equationId" value="<%= equation.id %>">
+            <button type="submit" class="remove-button">Remove</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
+
+  <script>
+
+  
+    function generateParameterFields() {
+      const parametersInput = document.getElementById('parameters');
+      const parameterFields = document.getElementById('parameterFields');
+      parameterFields.innerHTML = '';
+  
+      const parameters = parametersInput.value.split(',').map(param => param.trim());
+      parameters.forEach((param) => {
+        const label = document.createElement('label');
+        label.textContent = `Value of ${param}:`;
+  
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.name = param;
+        input.required = true;
+  
+        const br = document.createElement('br');
+  
+        parameterFields.appendChild(label);
+        parameterFields.appendChild(input);
+        parameterFields.appendChild(br);
+      });
+    }
+  </script>
+  
+</body>
+</html>
+
