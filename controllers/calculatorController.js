@@ -62,6 +62,8 @@ function calculatorController(equationService) {
         // Handle error when equation cannot be evaluated
         res.render('calculator', { error: errorMessage, equations });
       }
+
+      return errorMessage;
     });
     }
   });

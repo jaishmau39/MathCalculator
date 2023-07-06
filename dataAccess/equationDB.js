@@ -3,9 +3,9 @@ const mysql = require('mysql');
 // Configure MySQL connection
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'database_name',
+  user: 'root',
+  password: 'tekken24',
+  database: 'calculator_db',
 });
 
 connection.connect((err) => {
@@ -21,7 +21,7 @@ function saveEquation(equation, result, callback) {
   const query = 'INSERT INTO equations (equation, result) VALUES (?, ?)';
   connection.query(query, [equation, result], (err) => {
     if (err) {
-      console.error('Error saving equation to the database:', err);
+      console.error('Error saving equation to the database');
       callback(err);
     } else {
       callback(null);
