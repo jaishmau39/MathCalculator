@@ -73,7 +73,7 @@
       padding: 0;
     }
     
-    .result-item {
+    /* .result-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -87,6 +87,23 @@
     
     .result-value {
       font-size: 20px;
+    } */
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .result-equation {
+      flex: 1;
+      font-weight: bold;
+    }
+    
+    .result-value {
+      font-size: 20px;
+      margin-right: 200px;
     }
     
     .remove-button {
@@ -118,7 +135,7 @@
      
       <div class="form-group">
         <label for="parameters">Parameters (comma-separated):</label>
-        <input type="text" id="parameters" name="parameters" oninput="generateParameterFields()" required>
+        <input type="text" id="parameters" name="parameters" oninput="generateParameterFields()">
       </div>
     
       <!-- Display Parameter fields -->
