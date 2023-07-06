@@ -117,6 +117,10 @@ function evaluateEquation(equation, parameterValueMap) {
       }
     }
   
+    if (stack.length !== 1 || isNaN(stack[0])) {
+      throw new Error('Invalid equation: Enter equation in the correct format, for example, 6 + (3x -2y)');
+    }
+  
     return stack[0];
   }
   
