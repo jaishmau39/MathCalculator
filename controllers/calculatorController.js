@@ -34,9 +34,17 @@ function calculatorController(equationService) {
       parameterValues[parameter] = parseFloat(req.body[parameter]);
     }
 
+    
+
     try {
     let processedEquation = equation;
+    let stringParameterValue = '';
+    let count = 0;
+
     for (const parameter in parameterValues) {
+
+      count++;
+      if(count>1){stringParameterValue = stringParameterValue + ',';}
      
       // Check for coefficients if parameter(s) exists
       const coefficientRegex = new RegExp(`\\b(\\d+)\\s*${parameter}\\b`);
@@ -50,11 +58,15 @@ function calculatorController(equationService) {
         processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), parameterValues[parameter]);
       console.log(processedEquation);
       }
+      stringParameterValue = stringParameterValue+ parameterValues[parameter];
 
     }
-      const result = equationService.evaluateEquation(processedEquation, parameters);
 
-      equationService.saveEquation(equation, result, (err) => {
+      console.log("pv:"+stringParameterValue);
+      const result = equationService.evaluateEquation(processedEquation, parameters);
+ 
+      const saveEquation = equation+" where ("+parameterString+") = ("+stringParameterValue+")";
+      equationService.saveEquation(saveEquation, result, (err) => {
         if (err) {
           console.error('Could not save the equation');
           res.render('calculator', { error: 'An error occurred while saving the equation' });

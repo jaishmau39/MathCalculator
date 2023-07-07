@@ -4,6 +4,8 @@ const equationService = require('../services/equationService');
 const equationModel = require('../dataAccess/equationDB');
 
 describe('equationService', () => {
+
+  // Test equation with parameter that have coefficient
   describe('evaluateEquationTwoParameters', () => {
     it('evaluateEquation method should return the correct result when 2 parameters are passed in the equation', () => {
  
@@ -27,6 +29,10 @@ describe('equationService', () => {
       expect(result).to.equal(15);
     });
   });
+
+  // Test equation with parameter that have no coefficient
+
+
 
   describe('evaluateEquationNoParameters', () => {
     it('evaluateEquation method should return the correct result when no parameters are passed in the equation', () => {
@@ -82,7 +88,7 @@ describe('equationService', () => {
   });
 
 
-  // Test invalid
+  // Test invalid Equation
   describe('evaluateEquationInvalidEquation', () => {
     it('should throw the approropriate error message for an invalid equation', () => {
       const equation = 'Hellothere+2';
@@ -116,5 +122,7 @@ describe('equationService', () => {
       }
     });
   });
+
+  
 
 });
