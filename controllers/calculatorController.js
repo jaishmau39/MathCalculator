@@ -37,8 +37,20 @@ function calculatorController(equationService) {
     try {
     let processedEquation = equation;
     for (const parameter in parameterValues) {
-      processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
+     
+      // Check for coefficients if parameter(s) exists
+      const coefficientRegex = new RegExp(`\\b(\\d+)\\s*${parameter}\\b`);
+      const match = equation.match(coefficientRegex);
+      // If coefficient exists, multiply parameter with coefficient and substitute parameter value
+      if (match !== null){
+        processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
       console.log(processedEquation);
+      }else{
+        // Substitute parameter value 
+        processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), parameterValues[parameter]);
+      console.log(processedEquation);
+      }
+
     }
       const result = equationService.evaluateEquation(processedEquation, parameters);
 

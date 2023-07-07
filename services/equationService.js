@@ -107,8 +107,13 @@ function evaluateEquation(equation, parameterValueMap) {
   
         stack.push(result);
       } else if (isLetter(token)) {
+        // const coefficient = parseFloat(stack.pop());
+        // const valueOfParam = parameters.pop(); 
+        // const termResult = coefficient * valueOfParam;
+        // stack.push(termResult);
+
         const coefficient = parseFloat(stack.pop());
-        const valueOfParam = parameters.pop(); 
+        const valueOfParam = parseFloat(parameters.shift());
         const termResult = coefficient * valueOfParam;
         stack.push(termResult);
       } else {
