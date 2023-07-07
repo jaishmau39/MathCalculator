@@ -15,57 +15,19 @@ function calculatorController(equationService) {
     
   router.post('/', (req, res) => {
 
-    const equation = req.body.equation;
-    console.log(req.body);
-    console.log(equation);
-    const parameterString = req.body.parameters;
+    const requestBody = req.body;
+    const equation = requestBody.equation;
+    const parameterString = requestBody.parameters;
 
-    // If equation contains parameters, split 
-    const parameters = parameterString ? parameterString.split(',').map((param) => param.trim()):[];
+    console.log(requestBody);
 
-    
-    console.log(parameterString);
-    console.log(parameters);
-    console.log(req.body.z);
-  
-    // Assign parameter values to parameter character
-    const parameterValues = {};
-    for (const parameter of parameters) {
-      parameterValues[parameter] = parseFloat(req.body[parameter]);
-    }
+    // Call processEquation function from the equationService
+    const processEquationParams = equationService.processEquation(requestBody);
 
-    
-
-    try {
-    let processedEquation = equation;
-    let stringParameterValue = '';
-    let count = 0;
-
-    for (const parameter in parameterValues) {
-
-      count++;
-      if(count>1){stringParameterValue = stringParameterValue + ',';}
-     
-      // Check for coefficients if parameter(s) exists
-      const coefficientRegex = new RegExp(`\\b(\\d+)\\s*${parameter}\\b`);
-      const match = equation.match(coefficientRegex);
-      // If coefficient exists, multiply parameter with coefficient and substitute parameter value
-      if (match !== null){
-        processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
-      console.log(processedEquation);
-      }else{
-        // Substitute parameter value 
-        processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), parameterValues[parameter]);
-      console.log(processedEquation);
-      }
-      stringParameterValue = stringParameterValue+ parameterValues[parameter];
-
-    }
-
-      console.log("pv:"+stringParameterValue);
-      const result = equationService.evaluateEquation(processedEquation, parameters);
+      try {
+      const result = equationService.evaluateEquation(processEquationParams.processedEquation, processEquationParams.parameters);
  
-      const saveEquation = equation+" where ("+parameterString+") = ("+stringParameterValue+")";
+      const saveEquation = equation+" where ("+parameterString+") = ("+processEquationParams.stringParameterValue+")";
       equationService.saveEquation(saveEquation, result, (err) => {
         if (err) {
           console.error('Could not save the equation');

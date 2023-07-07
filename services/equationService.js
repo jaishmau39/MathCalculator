@@ -1,5 +1,50 @@
 const equationModel = require('../dataAccess/equationDB');
 
+
+function processEquation(requestBody) {
+  const equation = requestBody.equation;
+  const parameterString = requestBody.parameters;
+  const parameters = parameterString ? parameterString.split(',').map((param) => param.trim()) : [];
+
+  const parameterValues = {};
+  for (const parameter of parameters) {
+    parameterValues[parameter] = parseFloat(requestBody[parameter]);
+  }
+
+  let processedEquation = equation;
+  let stringParameterValue = '';
+  let count = 0;
+
+  for (const parameter in parameterValues) {
+    count++;
+    if (count > 1) {
+      stringParameterValue += ',';
+    }
+
+    const coefficientRegex = new RegExp(`\\b(\\d+)\\s*${parameter}\\b`);
+    const match = equation.match(coefficientRegex);
+
+    if (match !== null) {
+      processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
+      console.log(processedEquation);
+    } else {
+      processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), parameterValues[parameter]);
+      console.log(processedEquation);
+    }
+
+    stringParameterValue += parameterValues[parameter];
+  }
+
+  console.log("parameter values: " + stringParameterValue);
+
+  return {
+    processedEquation: processedEquation,
+    parameters: parameters,
+    stringParameterValue: stringParameterValue
+  };
+}
+
+
 // Evaluate equation
 function evaluateEquation(equation, parameterValueMap) {
     const tokens = tokenizeEquation(equation);
@@ -213,7 +258,9 @@ function evaluateEquation(equation, parameterValueMap) {
     });
   }
 
+
 module.exports = {
+  processEquation,
   evaluateEquation,
   saveEquation: equationModel.saveEquation,
   removeEquation: equationModel.removeEquation,

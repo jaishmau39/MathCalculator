@@ -1,29 +1,28 @@
 const { expect } = require('chai');
-const sinon = require('sinon');
 const equationService = require('../services/equationService');
-const equationModel = require('../dataAccess/equationDB');
 
 describe('equationService', () => {
 
-  // Test equation with parameter that have coefficient
+  // Test equation with no parameter(s) 
+  describe('evaluateEquationNoParameters', () => {
+    it('evaluateEquation method should return the correct result when no parameters are passed in the equation', () => {
+ 
+    const requestBody = { equation: '7 + 11', parameters: ''};
+    const processedEquationParams = equationService.processEquation(requestBody);
+      const result = equationService.evaluateEquation(processedEquationParams.processedEquation, processedEquationParams.parameters);
+
+      //check result
+      expect(result).to.equal(18);
+    });
+  });
+
+  // Test equation with parameter(s) that have coefficient(s)
   describe('evaluateEquationTwoParameters', () => {
     it('evaluateEquation method should return the correct result when 2 parameters with coefficients are passed in the equation', () => {
  
-    const requestBody = { equation: '2 + 3x + 1y', parameters: 'x,y', x: '2', y: '7' };
-    const equation = requestBody.equation;
-    const parameterString = requestBody.parameters;
-    const parameters = parameterString.split(',').map((param) => param.trim());
-  
-    const parameterValues = {};
-    for (const parameter of parameters){
-      parameterValues[parameter] = parseFloat(requestBody[parameter]);
-    }
-      
-    let processedEquation = equation;
-    for (const parameter in parameterValues) {
-      processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
-    }
-      const result = equationService.evaluateEquation(processedEquation, parameters);
+      const requestBody = { equation: '2 + 3x + 1y', parameters: 'x,y', x: '2', y: '7' };
+      const processedEquationParams = equationService.processEquation(requestBody);
+      const result = equationService.evaluateEquation(processedEquationParams.processedEquation, processedEquationParams.parameters);
 
       //check result
       expect(result).to.equal(15);
@@ -35,76 +34,21 @@ describe('equationService', () => {
     it('evaluateEquation method should return the correct result when parameter(s) with no coefficient are passed in the equation', () => {
  
     const requestBody = { equation: '2 + x + y', parameters: 'x,y', x: '3', y: '7' };
-    const equation = requestBody.equation;
-    const parameterString = requestBody.parameters;
-    const parameters = parameterString.split(',').map((param) => param.trim());
-  
-    const parameterValues = {};
-    for (const parameter of parameters){
-      parameterValues[parameter] = parseFloat(requestBody[parameter]);
-    }
-      
-    let processedEquation = equation;
-    for (const parameter in parameterValues) {
-    
-     
-      // Check for coefficients if parameter(s) exists
-      const coefficientRegex = new RegExp(`\\b(\\d+)\\s*${parameter}\\b`);
-      const match = equation.match(coefficientRegex);
-      // If coefficient exists, multiply parameter with coefficient and substitute parameter value
-      if (match !== null){
-        processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
-      console.log(processedEquation);
-      }else{
-        // Substitute parameter value 
-        processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), parameterValues[parameter]);
-      }
-     
-    }
-      const result = equationService.evaluateEquation(processedEquation, parameters);
+    const processedEquationParams = equationService.processEquation(requestBody);
+    const result = equationService.evaluateEquation(processedEquationParams.processedEquation, processedEquationParams.parameters);
 
       //check result
       expect(result).to.equal(12);
     });
   });
 
-  describe('evaluateEquationNoParameters', () => {
-    it('evaluateEquation method should return the correct result when no parameters are passed in the equation', () => {
- 
-    const requestBody = { equation: '7 + 11', parameters: []};
-    const equation = requestBody.equation;
-    const parameters = requestBody.parameters;
-    let processedEquation = equation;
-      const result = equationService.evaluateEquation(processedEquation, parameters);
-
-      //check result
-      expect(result).to.equal(18);
-    });
-  });
-
-
-  describe('evaluateEquationNoParameters', () => {
-    it('evaluateEquation method should return the correct result when no parameters are passed in the equation', () => {
- 
-    const requestBody = { equation: '7 + 11', parameters: []};
-    const equation = requestBody.equation;
-    const parameters = requestBody.parameters;
-    let processedEquation = equation;
-      const result = equationService.evaluateEquation(processedEquation, parameters);
-
-      //check result
-      expect(result).to.equal(18);
-    });
-  });
 
   describe('evaluateEquationBracketsPrecedence', () => {
     it('evaluateEquation method should return the correct result by calculating the expression in brackets first', () => {
  
-    const requestBody = { equation: '2 + 3 * (4 - 1)', parameters: []};
-    const equation = requestBody.equation;
-    const parameters = requestBody.parameters;
-    let processedEquation = equation;
-      const result = equationService.evaluateEquation(processedEquation, parameters);
+      const requestBody = { equation: '2 + 3 * (4 - 1)', parameters: ''};
+      const processedEquationParams = equationService.processEquation(requestBody);
+      const result = equationService.evaluateEquation(processedEquationParams.processedEquation, processedEquationParams.parameters);
 
       //check result
       expect(result).to.equal(11);
@@ -115,21 +59,9 @@ describe('equationService', () => {
   describe('evaluateEquationMultipleParameters', () => {
     it('evaluateEquation method should return the correct result when multiple parameters are passed in the equation', () => {
  
-    const requestBody = { equation: '2a + 3b * (8c - 7d)', parameters: 'a,b,c,d', a: '3', b: '4',c: '7', d: '32' };
-    const equation = requestBody.equation;
-    const parameterString = requestBody.parameters;
-    const parameters = parameterString.split(',').map((param) => param.trim());
-  
-    const parameterValues = {};
-    for (const parameter of parameters){
-      parameterValues[parameter] = parseFloat(requestBody[parameter]);
-    }
-      
-    let processedEquation = equation;
-    for (const parameter in parameterValues) {
-      processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
-    }
-      const result = equationService.evaluateEquation(processedEquation, parameters);
+    const requestBody = { equation: '2a + 3b * (8c - 7d)', parameters: 'a,b,c,d', a: '3', b: '4',c: '7', d: '32' }
+    const processedEquationParams = equationService.processEquation(requestBody);
+    const result = equationService.evaluateEquation(processedEquationParams.processedEquation, processedEquationParams.parameters);
 
       //check result
       expect(result).to.equal(-2010);
