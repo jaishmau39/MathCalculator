@@ -24,18 +24,17 @@ function processEquation(requestBody) {
     const coefficientRegex = new RegExp(`\\b(\\d+)\\s*${parameter}\\b`);
     const match = equation.match(coefficientRegex);
 
+    // Check coefficients for parameter(s)
     if (match !== null) {
+      // If coeffient exists for parameter(s), substitite parameter value and prefix with '*' to permorm multiply with coefficient value
       processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), '*' + parameterValues[parameter]);
-      console.log(processedEquation);
     } else {
+      // Substitute parameter value
       processedEquation = processedEquation.replace(new RegExp(parameter, 'g'), parameterValues[parameter]);
-      console.log(processedEquation);
     }
 
     stringParameterValue += parameterValues[parameter];
   }
-
-  console.log("parameter values: " + stringParameterValue);
 
   return {
     processedEquation: processedEquation,
@@ -50,13 +49,6 @@ function evaluateEquation(equation, parameterValueMap) {
     const tokens = tokenizeEquation(equation);
     const postfix = infixToPostfix(tokens);
     const result = evaluatePostfix(postfix, parameterValueMap);
-
-    console.log("parameterValueMap:"+parameterValueMap);
-    console.log("equation:"+equation);
-
-    console.log("tokens:"+tokens);
-    console.log("postfix:"+postfix);
-    console.log("result:"+result);
   
     return result;
   }
@@ -118,7 +110,7 @@ function evaluateEquation(equation, parameterValueMap) {
       postfix.push(stack.pop());
     }
   
-    console.log("stack:"+stack.value);
+    //console.log("stack:"+stack.value);
     return postfix;
   }
   
@@ -152,10 +144,6 @@ function evaluateEquation(equation, parameterValueMap) {
   
         stack.push(result);
       } else if (isLetter(token)) {
-        // const coefficient = parseFloat(stack.pop());
-        // const valueOfParam = parameters.pop(); 
-        // const termResult = coefficient * valueOfParam;
-        // stack.push(termResult);
 
         const coefficient = parseFloat(stack.pop());
         const valueOfParam = parseFloat(parameters.shift());

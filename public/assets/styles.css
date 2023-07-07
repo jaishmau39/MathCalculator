@@ -1,0 +1,101 @@
+    /* CSS Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f3f3;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+      
+      .title {
+        text-align: center;
+        font-size: 28px;
+        margin-top: 0;
+      }
+      
+      .calculator-form {
+        margin-bottom: 20px;
+      }
+      
+      .form-group {
+        margin-bottom: 10px;
+      }
+      
+      .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      
+      .form-group input[type="text"],
+      .form-group input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+      
+      .calculate-button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 16px;
+        font-size: 16px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      
+      .calculate-button:hover {
+        background-color: #45a049;
+      }
+      
+      .results-title {
+        margin-top: 0;
+      }
+      
+      .results-list {
+        list-style-type: none;
+        padding: 0;
+      }
+  
+      .result-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      .result-equation {
+        flex: 1;
+        font-weight: bold;
+      }
+      
+      .result-value {
+        font-size: 20px;
+        margin-right: 200px;
+      }
+      
+      .remove-button {
+        background-color: #f44336;
+        color: #fff;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      
+      .remove-button:hover {
+        background-color: #d32f2f;
+      }
+      .form-group input[type="text"]::placeholder,
+      .form-group input[type="number"]::placeholder {color: #999999;}

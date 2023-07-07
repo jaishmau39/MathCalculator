@@ -19,8 +19,6 @@ function calculatorController(equationService) {
     const equation = requestBody.equation;
     const parameterString = requestBody.parameters;
 
-    console.log(requestBody);
-
     // Call processEquation function from the equationService
     const processEquationParams = equationService.processEquation(requestBody);
 

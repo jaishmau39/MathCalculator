@@ -3,8 +3,8 @@ const mysql = require('mysql');
 // Configure MySQL connection
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
+  user: 'your-username',
+  password: 'your-password',
   database: 'calculator_db',
 });
 
@@ -51,7 +51,7 @@ function getAllEquations(callback) {
       callback(err, null);
     } else {
       callback(null, equations);
-      console.log("equations"+equations);
+      //console.log("equations"+equations);
     }
   });
 }
